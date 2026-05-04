@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Opsen Labs — Product engineering studio. MVP Sprint, MVP Recovery, Product Optimisation. Singapore & global." />
+  <title>Opsen Labs — Product Engineering Studio</title>
+  <link rel="preconnect" href="https://fonts.cdnfonts.com" />
+  <link rel="stylesheet" href="css/global.css" />
+  <style>
+    @font-face {
+      font-family: 'Alta';
+      src: local('Alta'), url('https://fonts.cdnfonts.com/s/16119/Alta.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: var(--cream);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) clamp(64px,8vw,100px);
+      position: relative; overflow: hidden;
+    }
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .hero__ghost {
+      position: absolute; top: 50%; left: var(--gutter);
+      transform: translateY(-55%);
+      font-family: var(--font-display);
+      font-size: clamp(100px,20vw,280px);
+      color: rgba(12,12,12,0.04); line-height: 1;
+      pointer-events: none; user-select: none;
+      letter-spacing: -0.03em; white-space: nowrap; z-index: 0;
+    }
+    .hero__accent {
+      position: absolute; top: 80px; right: var(--gutter);
+      width: 220px; height: 220px; z-index: 0; pointer-events: none;
+    }
+    .hero__rule {
+      position: absolute; top: 0; left: var(--gutter); right: var(--gutter);
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 60%);
+      z-index: 2;
+    }
+    .hero__content { position: relative; z-index: 1; max-width: var(--max-w); margin: 0 auto; width: 100%; }
+    .hero__eyebrow {
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .hero__eyebrow::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold); }
+    .hero__h1 {
+      font-family: var(--font-display);
+      font-size: clamp(56px,9vw,120px); font-weight: 400; line-height: 0.97;
+      color: var(--near-black);
+    }
+    .hero__h1 .line-italic { font-style: italic; color: var(--warm-grey); display: block; }
+    .hero__h1 .line-shipped { display: block; position: relative; }
+    .hero__h1 .line-shipped::after {
+      content: ''; position: absolute; bottom: 4px; left: 0;
+      width: 0; height: 3px; background: var(--gold);
+      animation: underline-in 1.2s cubic-bezier(0.22,1,0.36,1) 0.8s forwards;
+    }
+    @keyframes underline-in { to { width: 100%; } }
+    .hero__sub {
+      font-size: clamp(14px,1.5vw,17px); color: var(--warm-grey);
+      max-width: 520px; line-height: 1.7; margin-top: 36px; margin-bottom: 48px;
+    }
+    .hero__actions { display: flex; gap: 16px; flex-wrap: wrap; align-items: center; }
+    .hero__scroll-hint {
+      position: absolute; bottom: clamp(28px,4vw,52px); right: var(--gutter);
+      z-index: 1; writing-mode: vertical-rl;
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--mid-grey); text-decoration: none;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero__scroll-hint::before {
+      content: ''; display: block; width: 1px; height: 50px;
+      background: linear-gradient(to bottom, transparent, var(--mid-grey));
+      animation: scroll-pulse 2s ease-in-out infinite;
+    }
+    @keyframes scroll-pulse { 0%,100%{opacity:0.4} 50%{opacity:1} }
+    .hero__content > * {
+      opacity: 0; transform: translateY(24px);
+      animation: hero-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .hero__eyebrow  { animation-delay: 0.1s; }
+    .hero__h1       { animation-delay: 0.25s; }
+    .hero__sub      { animation-delay: 0.45s; }
+    .hero__actions  { animation-delay: 0.6s; }
+    @keyframes hero-in { to { opacity:1; transform:translateY(0); } }
+
+    /* STATS */
+    .stats-band { border-top: 1px solid var(--sand); border-bottom: 1px solid var(--sand); }
+    .stats-inner { display: grid; grid-template-columns: repeat(4,1fr); max-width: var(--max-w); margin: 0 auto; }
+    .stat-cell {
+      padding: clamp(36px,5vw,60px) var(--gutter);
+      border-right: 1px solid var(--sand); position: relative;
+    }
+    .stat-cell:last-child { border-right: none; }
+    .stat-cell::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 24px; height: 24px;
+      border-top: 2px solid var(--gold); border-left: 2px solid var(--gold);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .stat-cell:hover::before { opacity: 1; }
+    @media (max-width: 720px) {
+      .stats-inner { grid-template-columns: repeat(2,1fr); }
+      .stat-cell:nth-child(2) { border-right: none; }
+      .stat-cell:nth-child(3) { border-top: 1px solid var(--sand); }
+    }
+
+    /* INTRO */
+    .intro-band {
+      padding: clamp(80px,10vw,140px) var(--gutter);
+      max-width: var(--max-w); margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(32px,6vw,100px); align-items: center;
+    }
+    .intro-band__visual { position: relative; height: 320px; }
+    .intro-band__visual svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .intro-band__heading { font-size: clamp(28px,3.5vw,44px); line-height: 1.1; margin-bottom: 24px; }
+    .intro-band__body { font-size: 15px; color: var(--warm-grey); line-height: 1.8; }
+    .intro-band__body p + p { margin-top: 20px; }
+    @media (max-width: 720px) {
+      .intro-band { grid-template-columns: 1fr; }
+      .intro-band__visual { display: none; }
+    }
+
+    /* SERVICES */
+    .services-wrap { padding: 0 var(--gutter) clamp(80px,10vw,140px); max-width: var(--max-w); margin: 0 auto; }
+    .services-grid { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--sand); }
+    .svc-card {
+      padding: clamp(32px,4vw,56px) clamp(24px,3vw,44px) clamp(24px,3vw,44px);
+      border-right: 1px solid var(--sand);
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      position: relative; overflow: hidden;
+    }
+    .svc-card:last-child { border-right: none; }
+    .svc-card::before {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 0;
+      background: var(--sand);
+      transition: height 0.35s cubic-bezier(0.22,1,0.36,1); z-index: 0;
+    }
+    .svc-card:hover::before { height: 100%; }
+    .svc-card > * { position: relative; z-index: 1; }
+    .svc-card__num {
+      font-size: 10px; letter-spacing: 0.16em; color: var(--mid-grey);
+      margin-bottom: 40px; display: flex; align-items: center; gap: 12px;
+    }
+    .svc-card__num::after { content: ''; flex: 1; height: 1px; background: var(--light-grey); }
+    .svc-card__title { font-family: var(--font-display); font-size: clamp(22px,2.5vw,32px); font-weight: 400; margin-bottom: 18px; line-height: 1.1; }
+    .svc-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.75; flex: 1; margin-bottom: 36px; }
+    .svc-card__arrow {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--near-black); display: flex; align-items: center; gap: 10px;
+      transition: gap 0.25s, color 0.25s;
+    }
+    .svc-card__arrow::after { content: '→'; font-size: 16px; letter-spacing: 0; transition: transform 0.25s; }
+    .svc-card:hover .svc-card__arrow { gap: 16px; color: var(--gold); }
+    .svc-card:hover .svc-card__arrow::after { transform: translateX(4px); }
+    @media (max-width: 820px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .svc-card { border-right: none; border-bottom: 1px solid var(--sand); }
+      .svc-card:last-child { border-bottom: none; }
+    }
+
+    /* PROCESS */
+    .process-section {
+      background: var(--near-black); position: relative; overflow: hidden;
+      padding: clamp(80px,10vw,140px) var(--gutter);
+    }
+    .process-section .deco-circle-1 {
+      position: absolute; top: -200px; right: -200px;
+      width: 600px; height: 600px; border-radius: 50%;
+      border: 1px solid rgba(188,154,91,0.1); pointer-events: none;
+    }
+    .process-section .deco-circle-2 {
+      position: absolute; top: -100px; right: -100px;
+      width: 400px; height: 400px; border-radius: 50%;
+      border: 1px solid rgba(188,154,91,0.07); pointer-events: none;
+    }
+    .process-inner { max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+    .process-header { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: clamp(56px,7vw,96px); align-items: end; }
+    .process-header h2 { font-size: clamp(32px,4vw,52px); color: var(--cream); }
+    .process-header p { font-size: 14px; color: rgba(247,245,241,0.45); line-height: 1.75; }
+    @media (max-width: 720px) { .process-header { grid-template-columns: 1fr; } }
+    .process-steps { display: grid; grid-template-columns: repeat(4,1fr); border-top: 1px solid rgba(255,255,255,0.07); }
+    .p-step {
+      padding: clamp(36px,4vw,56px) clamp(24px,3vw,40px) clamp(36px,4vw,56px) 0;
+      border-right: 1px solid rgba(255,255,255,0.07); position: relative;
+    }
+    .p-step:last-child { border-right: none; padding-right: 0; }
+    .p-step__num { font-family: var(--font-display); font-size: 72px; color: rgba(255,255,255,0.05); line-height: 1; display: block; margin-bottom: 20px; }
+    .p-step__label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; display: block; }
+    .p-step__title { font-family: var(--font-display); font-size: 22px; color: var(--cream); margin-bottom: 14px; font-weight: 400; }
+    .p-step__body { font-size: 13px; color: rgba(247,245,241,0.42); line-height: 1.75; }
+    .p-step::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .p-step:hover::after { width: calc(100% - clamp(24px,3vw,40px)); }
+    @media (max-width: 820px) {
+      .process-steps { grid-template-columns: repeat(2,1fr); }
+      .p-step { padding: 36px 24px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .p-step:nth-child(even) { border-right: none; }
+    }
+
+    /* TESTIMONIALS */
+    .testi-section {
+      background: var(--near-black); position: relative; overflow: hidden;
+      padding: clamp(80px,10vw,140px) var(--gutter);
+    }
+    .testi-section .deco-grain {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .testi-inner { max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+    .testi-header { margin-bottom: 52px; }
+    .testi-header h2 { font-size: clamp(30px,4vw,48px); color: var(--cream); margin-top: 16px; }
+    .testi-tabs { display: flex; gap: 0; border-bottom: 1px solid rgba(255,255,255,0.1); margin-bottom: 52px; }
+    .testi-tab {
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(247,245,241,0.3); padding: 0 0 16px; margin-right: 32px;
+      cursor: pointer; background: none; border: none;
+      border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+    }
+    .testi-tab.active { color: var(--cream); border-bottom-color: var(--gold); }
+    .testi-panel { display: none; }
+    .testi-panel.active { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); }
+    @media (max-width: 720px) { .testi-panel.active { grid-template-columns: 1fr; } }
+    .testi-card { padding: 40px; border: 1px solid rgba(255,255,255,0.07); position: relative; }
+    .testi-card::before {
+      content: '\201C'; position: absolute; top: 20px; left: 28px;
+      font-family: var(--font-display); font-size: 80px; line-height: 1;
+      color: rgba(188,154,91,0.15); pointer-events: none;
+    }
+    .testi-card__quote {
+      font-family: var(--font-display); font-size: clamp(17px,2vw,22px); font-weight: 400;
+      color: rgba(247,245,241,0.82); line-height: 1.5; margin-bottom: 28px;
+      position: relative; z-index: 1; padding-top: 16px;
+    }
+    .testi-card__rule { width: 32px; height: 1px; background: var(--gold); margin-bottom: 16px; }
+    .testi-card__attr { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); }
+
+    /* CONTACT */
+    .contact-section {
+      padding: clamp(80px,10vw,140px) var(--gutter);
+      max-width: var(--max-w); margin: 0 auto; position: relative;
+    }
+    .contact-section::before {
+      content: '\221E'; position: absolute; right: var(--gutter); top: 50%;
+      transform: translateY(-50%); font-size: clamp(160px,22vw,340px);
+      color: rgba(12,12,12,0.03); font-family: var(--font-display);
+      pointer-events: none; user-select: none; line-height: 1;
+    }
+    .contact-header { margin-bottom: clamp(56px,7vw,96px); }
+    .contact-header h2 { font-size: clamp(36px,5.5vw,72px); line-height: 1.0; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1px 1fr; gap: clamp(32px,5vw,80px); position: relative; z-index: 1; }
+    .contact-divider { background: var(--sand); align-self: stretch; }
+    @media (max-width: 820px) { .contact-grid { grid-template-columns: 1fr; } .contact-divider { display: none; } }
+    .contact-card__title { font-family: var(--font-display); font-size: clamp(28px,3vw,40px); font-weight: 400; margin-bottom: 16px; }
+    .contact-card__body { font-size: 14px; color: var(--warm-grey); line-height: 1.75; margin-bottom: 40px; }
+    .cta-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-field label { display: block; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--mid-grey); margin-bottom: 6px; }
+    .form-field input, .form-field select, .form-field textarea {
+      width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--light-grey);
+      padding: 10px 0; font-family: var(--font-body); font-size: 13px; color: var(--near-black); outline: none;
+      transition: border-color 0.25s;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-bottom-color: var(--near-black); }
+    .form-field textarea { resize: vertical; min-height: 96px; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="nav">
+  <a class="nav__logo" href="index.html" aria-label="Opsen Labs">
+    <img class="nav__logo-img" src="images/opsen-logo.png" alt="Opsen Labs" />
+  </a>
+  <ul class="nav__links">
+    <li class="nav__item--dropdown">
+      <a href="#services">Services &#9662;</a>
+      <div class="nav__dropdown">
+        <a href="pages/mvp-sprint.html">MVP Sprint</a>
+        <a href="pages/mvp-recovery.html">MVP Recovery</a>
+        <a href="pages/product-optimisation.html">Product Optimisation</a>
+      </div>
+    </li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#testimonials">Testimonials</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="btn btn--dark nav__cta" href="#contact">Get Free Estimate</a>
+  <button class="nav__hamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero__rule"></div>
+  <span class="hero__ghost" aria-hidden="true">LABS</span>
+  <svg class="hero__accent" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="110" cy="110" r="109" stroke="#bc9a5b" stroke-width="0.5" stroke-dasharray="4 8" opacity="0.35"/>
+    <circle cx="110" cy="110" r="72"  stroke="#bc9a5b" stroke-width="0.5" opacity="0.2"/>
+    <line x1="110" y1="1"  x2="110" y2="219" stroke="#bc9a5b" stroke-width="0.5" opacity="0.15"/>
+    <line x1="1"   y1="110" x2="219" y2="110" stroke="#bc9a5b" stroke-width="0.5" opacity="0.15"/>
+    <circle cx="110" cy="110" r="4" fill="#bc9a5b" opacity="0.5"/>
+  </svg>
+  <div class="hero__content">
+    <span class="hero__eyebrow">Product Engineering Studio</span>
+    <h1 class="hero__h1">
+      Your idea.
+      <span class="line-italic">Our obsession.</span>
+      <span class="line-shipped">Shipped.</span>
+    </h1>
+    <p class="hero__sub">Speed and quality are not opposites — they are a competitive advantage. We engineer products that reach market in weeks and scale for years, because your runway demands both.</p>
+    <div class="hero__actions">
+      <a class="btn btn--dark" href="#contact">Get a Free Estimate</a>
+      <a class="btn btn--outline" href="#process">See How We Work</a>
+    </div>
+  </div>
+  <a class="hero__scroll-hint" href="#stats" aria-label="Scroll down">Scroll</a>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>MVP Sprint</span><span class="dot">&middot;</span>
+    <span>MVP Recovery</span><span class="dot">&middot;</span>
+    <span>Product Optimisation</span><span class="dot">&middot;</span>
+    <span>Singapore</span><span class="dot">&middot;</span>
+    <span>UAE</span><span class="dot">&middot;</span>
+    <span>India</span><span class="dot">&middot;</span>
+    <span>Philippines</span><span class="dot">&middot;</span>
+    <span>Africa</span><span class="dot">&middot;</span>
+    <span>Ship Fast</span><span class="dot">&middot;</span>
+    <span>Scale Further</span><span class="dot">&middot;</span>
+    <span>MVP Sprint</span><span class="dot">&middot;</span>
+    <span>MVP Recovery</span><span class="dot">&middot;</span>
+    <span>Product Optimisation</span><span class="dot">&middot;</span>
+    <span>Singapore</span><span class="dot">&middot;</span>
+    <span>UAE</span><span class="dot">&middot;</span>
+    <span>India</span><span class="dot">&middot;</span>
+    <span>Philippines</span><span class="dot">&middot;</span>
+    <span>Africa</span><span class="dot">&middot;</span>
+    <span>Ship Fast</span><span class="dot">&middot;</span>
+    <span>Scale Further</span><span class="dot">&middot;</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-band" id="stats">
+  <div class="stats-inner">
+    <div class="stat-cell fade-up">
+      <span class="stat-num" data-count="47" data-suffix="+">0+</span>
+      <span class="stat-label">Products Shipped</span>
+    </div>
+    <div class="stat-cell fade-up" style="transition-delay:.1s">
+      <span class="stat-num" data-count="6" data-suffix=" wks">0</span>
+      <span class="stat-label">Avg. MVP Timeline</span>
+    </div>
+    <div class="stat-cell fade-up" style="transition-delay:.2s">
+      <span class="stat-num" data-count="91" data-suffix="%">0%</span>
+      <span class="stat-label">Client Retention</span>
+    </div>
+    <div class="stat-cell fade-up" style="transition-delay:.3s">
+      <span class="stat-num" data-count="8" data-suffix="+">0+</span>
+      <span class="stat-label">Industries Served</span>
+    </div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div class="intro-band">
+  <div class="intro-band__visual fade-up">
+    <svg viewBox="0 0 480 320" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <g opacity="0.22">
+        <circle cx="40"  cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="120" cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="200" cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="280" cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="360" cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="440" cy="40"  r="2.5" fill="#67615d"/>
+        <circle cx="40"  cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="120" cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="200" cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="280" cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="360" cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="440" cy="120" r="2.5" fill="#67615d"/>
+        <circle cx="40"  cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="120" cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="200" cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="280" cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="360" cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="440" cy="200" r="2.5" fill="#67615d"/>
+        <circle cx="40"  cy="280" r="2.5" fill="#67615d"/>
+        <circle cx="120" cy="280" r="2.5" fill="#67615d"/>
+        <circle cx="200" cy="280" r="2.5" fill="#67615d"/>
+        <circle cx="280" cy="280" r="2.5" fill="#67615d"/>
+        <circle cx="360" cy="280" r="2.5" fill="#67615d"/>
+        <circle cx="440" cy="280" r="2.5" fill="#67615d"/>
+      </g>
+      <circle cx="240" cy="160" r="130" stroke="#bc9a5b" stroke-width="0.75" opacity="0.3"/>
+      <circle cx="240" cy="160" r="80"  stroke="#0c0c0c" stroke-width="0.5" stroke-dasharray="6 10" opacity="0.2"/>
+      <line x1="110" y1="160" x2="370" y2="160" stroke="#bc9a5b" stroke-width="0.75" opacity="0.3"/>
+      <line x1="240" y1="30"  x2="240" y2="290" stroke="#bc9a5b" stroke-width="0.75" opacity="0.3"/>
+      <circle cx="240" cy="160" r="6" fill="none" stroke="#bc9a5b" stroke-width="1.5" opacity="0.7"/>
+      <circle cx="240" cy="160" r="2" fill="#bc9a5b" opacity="0.9"/>
+      <path d="M40 60 L40 40 L60 40"   stroke="#0c0c0c" stroke-width="1.5" opacity="0.35" fill="none"/>
+      <path d="M440 260 L440 280 L420 280" stroke="#0c0c0c" stroke-width="1.5" opacity="0.35" fill="none"/>
+      <path d="M40 260 L40 280 L60 280"   stroke="#0c0c0c" stroke-width="1.5" opacity="0.35" fill="none"/>
+      <text x="254" y="155" fill="#bc9a5b" font-size="9" opacity="0.6" font-family="Helvetica Neue,sans-serif" letter-spacing="2">OPSEN</text>
+    </svg>
+  </div>
+  <div class="fade-up" style="transition-delay:.15s">
+    <span class="eyebrow" style="display:block;margin-bottom:20px;">What We Do</span>
+    <h2 class="intro-band__heading">Three ways we transform your product</h2>
+    <div class="intro-band__body">
+      <p>Most studios force a trade-off between velocity and craftsmanship. At Opsen Labs, that is a false choice.</p>
+      <p>Whether you are building from zero, rescuing a troubled codebase, or pushing a mature product to its ceiling — we have a focused engagement model built for exactly where you are.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="services-wrap" id="services">
+  <div class="services-grid">
+    <a class="svc-card fade-up" href="pages/mvp-sprint.html">
+      <span class="svc-card__num">01</span>
+      <h3 class="svc-card__title">MVP Sprint</h3>
+      <p class="svc-card__body">Stop losing ground while competitors ship. We take your validated concept from zero to a fundable, market-ready product in weeks — giving you the proof you need to raise, sell, and grow before the window closes.</p>
+      <span class="svc-card__arrow">Learn More</span>
+    </a>
+    <a class="svc-card fade-up" href="pages/mvp-recovery.html" style="transition-delay:.1s">
+      <span class="svc-card__num">02</span>
+      <h3 class="svc-card__title">MVP Recovery</h3>
+      <p class="svc-card__body">Technical debt is a silent growth killer. Whether it is crippling performance, a fragile codebase, or a UX that haemorrhages users — we diagnose the root cause and rebuild the foundation your next phase demands.</p>
+      <span class="svc-card__arrow">Learn More</span>
+    </a>
+    <a class="svc-card fade-up" href="pages/product-optimisation.html" style="transition-delay:.2s">
+      <span class="svc-card__num">03</span>
+      <h3 class="svc-card__title">Product Optimisation</h3>
+      <p class="svc-card__body">Growth plateaus when your product cannot keep pace. We go deep on load times, conversion flows, infrastructure costs, and retention loops — surfacing the compound optimisations that translate into measurable revenue.</p>
+      <span class="svc-card__arrow">Learn More</span>
+    </a>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<section class="process-section" id="process">
+  <div class="deco-circle-1" aria-hidden="true"></div>
+  <div class="deco-circle-2" aria-hidden="true"></div>
+  <div class="process-inner">
+    <div class="process-header">
+      <h2 class="fade-up">Disciplined execution.<br>Total transparency.</h2>
+      <p class="fade-up" style="transition-delay:.1s">Every engagement follows the same rigorous process. You see real progress — working software, not status updates — at every stage.</p>
+    </div>
+    <div class="process-steps">
+      <div class="p-step fade-up">
+        <span class="p-step__num">01</span>
+        <span class="p-step__label">Discover</span>
+        <h3 class="p-step__title">Map Before You Build</h3>
+        <p class="p-step__body">We align on goals, users, and constraints before writing a single line of code. Clarity now prevents costly rework later.</p>
+      </div>
+      <div class="p-step fade-up" style="transition-delay:.1s">
+        <span class="p-step__num">02</span>
+        <span class="p-step__label">Architect</span>
+        <h3 class="p-step__title">Stack Meets Strategy</h3>
+        <p class="p-step__body">Technology choices designed around your business model, not the other way around. Structure and scope are agreed and locked before build begins.</p>
+      </div>
+      <div class="p-step fade-up" style="transition-delay:.2s">
+        <span class="p-step__num">03</span>
+        <span class="p-step__label">Build</span>
+        <h3 class="p-step__title">Weekly Releases</h3>
+        <p class="p-step__body">Rapid sprints with full visibility. You review working software each week — not slide decks, not wireframes. Real progress, always.</p>
+      </div>
+      <div class="p-step fade-up" style="transition-delay:.3s">
+        <span class="p-step__num">04</span>
+        <span class="p-step__label">Launch &amp; Scale</span>
+        <h3 class="p-step__title">Live — and Growing</h3>
+        <p class="p-step__body">Production deployment, monitoring, and continuous optimisation as your user base and ambitions compound over time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testi-section" id="testimonials">
+  <div class="deco-grain" aria-hidden="true"></div>
+  <div class="testi-inner">
+    <div class="testi-header">
+      <span class="eyebrow fade-up" style="color:var(--gold);display:block;">Straight From the Source</span>
+      <h2 class="fade-up" style="transition-delay:.1s">Founders. Leaders.<br>Results they trust.</h2>
+    </div>
+    <div class="testi-tabs fade-up" style="transition-delay:.15s">
+      <button class="testi-tab active" onclick="switchTab('banking',this)">Banking</button>
+      <button class="testi-tab" onclick="switchTab('logistics',this)">Logistics</button>
+      <button class="testi-tab" onclick="switchTab('ecomm',this)">E-Commerce</button>
+    </div>
+    <div id="tab-banking" class="testi-panel active fade-up" style="transition-delay:.2s">
+      <div class="testi-card">
+        <p class="testi-card__quote">Opsen delivered our compliance dashboard in six weeks. The quality was extraordinary — far beyond what we expected at that pace.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">Head of Digital, Regional Bank — India</p>
+      </div>
+      <div class="testi-card">
+        <p class="testi-card__quote">They understood our regulatory constraints immediately and engineered around them. That calibre of domain awareness is exceptionally rare in a product studio.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">CTO, Fintech Startup — Singapore</p>
+      </div>
+    </div>
+    <div id="tab-logistics" class="testi-panel fade-up" style="transition-delay:.2s">
+      <div class="testi-card">
+        <p class="testi-card__quote">Our shipment tracking portal went from whiteboard to live deployment in under two months. The team anticipated integration issues before we even raised them.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">VP Operations, Supply Chain Platform — UAE</p>
+      </div>
+      <div class="testi-card">
+        <p class="testi-card__quote">Opsen rebuilt our routing engine without a single day of downtime. That kind of engineering discipline is rare — and it paid off immediately.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">Head of Technology, 3PL Provider — Philippines</p>
+      </div>
+    </div>
+    <div id="tab-ecomm" class="testi-panel fade-up" style="transition-delay:.2s">
+      <div class="testi-card">
+        <p class="testi-card__quote">Checkout conversion climbed 34% within six weeks of launch. Opsen did not just build features — they interrogated our funnel and fixed what mattered most.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">Founder, D2C Brand — Singapore</p>
+      </div>
+      <div class="testi-card">
+        <p class="testi-card__quote">We came in with a fragile codebase and left with a platform that handled a 10x traffic spike on launch day without a single outage.</p>
+        <div class="testi-card__rule"></div>
+        <p class="testi-card__attr">CTO, Marketplace Platform — India</p>
+      </div>
+    </div>
+    <div style="margin-top:52px;" class="fade-up">
+      <a class="btn btn--outline-light" href="#contact">Start the Conversation</a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-header">
+    <span class="eyebrow fade-up" style="display:block;margin-bottom:20px;">Ready When You Are</span>
+    <h2 class="fade-up" style="transition-delay:.1s">The best time<br>to start was yesterday.</h2>
+  </div>
+  <div class="contact-grid">
+    <div class="fade-up">
+      <h3 class="contact-card__title">Request Estimate</h3>
+      <p class="contact-card__body">Tell us what you are building. We will respond with a clear scope, honest timeline, and a fixed-price proposal within 48 hours. Zero jargon, zero fluff.</p>
+      <form class="cta-form" onsubmit="handleSubmit(event,this)">
+        <div class="form-field"><label>Full Name</label><input type="text" placeholder="Jane Smith" required /></div>
+        <div class="form-field"><label>Company</label><input type="text" placeholder="Acme Inc." /></div>
+        <div class="form-field"><label>Email</label><input type="email" placeholder="jane@acme.com" required /></div>
+        <div class="form-field"><label>Service</label>
+          <select><option value="">Select a service</option><option>MVP Sprint</option><option>MVP Recovery</option><option>Product Optimisation</option></select>
+        </div>
+        <div class="form-field"><label>Tell Us What You Are Building</label><textarea rows="4" placeholder="Describe your product and where you are today..."></textarea></div>
+        <button class="btn btn--dark" type="submit">Submit Request</button>
+      </form>
+    </div>
+    <div class="contact-divider"></div>
+    <div class="fade-up" style="transition-delay:.15s">
+      <h3 class="contact-card__title">Say Hello</h3>
+      <p class="contact-card__body">Have a question? An idea to pressure-test? A problem keeping you up at night? Every message is read personally and answered within one business day.</p>
+      <form class="cta-form" onsubmit="handleSubmit(event,this)">
+        <div class="form-field"><label>Your Name</label><input type="text" placeholder="Jane Smith" required /></div>
+        <div class="form-field"><label>Email</label><input type="email" placeholder="jane@acme.com" required /></div>
+        <div class="form-field"><label>Subject</label><input type="text" placeholder="What is on your mind?" /></div>
+        <div class="form-field"><label>Message</label><textarea rows="5" placeholder="Tell us more..." required></textarea></div>
+        <button class="btn btn--dark" type="submit">Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer__top">
+    <div>
+      <img class="footer__logo-img" src="images/opsen-logo.png" alt="Opsen Labs" />
+      <p class="footer__tagline">Product engineering, done right.</p>
+    </div>
+    <ul class="footer__links">
+      <li><a href="pages/mvp-sprint.html">MVP Sprint</a></li>
+      <li><a href="pages/mvp-recovery.html">MVP Recovery</a></li>
+      <li><a href="pages/product-optimisation.html">Product Optimisation</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">&copy; 2025 Opsen Labs. All rights reserved.</p>
+    <p class="footer__copy">Singapore &middot; Dubai &middot; Manila &middot; Mumbai &middot; Karachi</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  document.querySelectorAll('.testi-panel:not(.active)').forEach(function(p){ p.style.display='none'; });
+</script>
+</body>
+</html>

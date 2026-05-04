@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Opsen Labs MVP Recovery — Rescue a fragile codebase and rebuild the foundations your next growth phase demands." />
+  <title>MVP Recovery — Opsen Labs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <style>
+    @font-face {
+      font-family: 'Alta';
+      src: local('Alta'), url('https://fonts.cdnfonts.com/s/16119/Alta.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    .svc-hero {
+      min-height: 80vh; background: #1a1410;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) clamp(64px,8vw,100px);
+      position: relative; overflow: hidden;
+    }
+    .svc-hero::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at 80% 20%, rgba(188,154,91,0.07) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .svc-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .svc-hero__back {
+      position: absolute; top: calc(var(--nav-h) + 24px); left: var(--gutter);
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--warm-grey); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 0.2s; z-index: 2;
+    }
+    .svc-hero__back:hover { color: var(--gold); }
+    .svc-hero__num {
+      position: absolute; right: var(--gutter); bottom: -30px;
+      font-family: var(--font-display); font-size: clamp(160px,22vw,300px);
+      color: rgba(255,255,255,0.03); line-height: 1;
+      pointer-events: none; user-select: none; z-index: 0;
+    }
+    .svc-hero__content { position: relative; z-index: 1; max-width: var(--max-w); margin: 0 auto; width: 100%; }
+    .svc-hero__content > * {
+      opacity: 0; transform: translateY(20px);
+      animation: hero-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .svc-hero .eyebrow { animation-delay: 0.1s; }
+    .svc-hero h1       { animation-delay: 0.25s; }
+    .svc-hero__lead    { animation-delay: 0.4s; }
+    .svc-hero .btn     { animation-delay: 0.55s; }
+    @keyframes hero-in { to { opacity:1; transform:translateY(0); } }
+    .svc-hero h1 {
+      font-family: var(--font-display); font-size: clamp(48px,7vw,96px); font-weight: 400;
+      color: var(--cream); line-height: 1.0; margin: 16px 0 24px;
+    }
+    .svc-hero__lead {
+      font-size: clamp(15px,1.5vw,18px); color: rgba(247,245,241,0.6);
+      max-width: 560px; line-height: 1.7; margin-bottom: 40px;
+    }
+    .top-rule {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 50%);
+    }
+
+    /* OVERVIEW */
+    .overview {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(32px,6vw,96px);
+      padding: clamp(72px,9vw,120px) var(--gutter);
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .overview h2 { font-size: clamp(28px,3.5vw,44px); line-height: 1.1; }
+    .overview__body { font-size: 15px; color: var(--warm-grey); line-height: 1.8; }
+    .overview__body p + p { margin-top: 20px; }
+    @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+
+    /* SYMPTOMS */
+    .symptoms { background: var(--near-black); padding: clamp(72px,9vw,120px) var(--gutter); position: relative; overflow: hidden; }
+    .symptoms::before {
+      content: ''; position: absolute; bottom: -150px; left: -150px;
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(188,154,91,0.08); pointer-events: none;
+    }
+    .symptoms__inner { max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+    .symptoms__grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.07); margin-top: 56px;
+    }
+    .symptom {
+      background: var(--near-black); padding: clamp(28px,3vw,44px);
+      transition: background 0.25s;
+    }
+    .symptom:hover { background: rgba(255,255,255,0.03); }
+    .symptom__label { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: block; }
+    .symptom__heading { font-family: var(--font-display); font-size: 20px; font-weight: 400; color: var(--cream); line-height: 1.3; margin-bottom: 12px; }
+    .symptom__body { font-size: 13px; color: rgba(247,245,241,0.42); line-height: 1.7; }
+    @media (max-width: 720px) { .symptoms__grid { grid-template-columns: 1fr; } }
+
+    /* RECOVERY PROCESS */
+    .rp-section { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .rp-steps { margin-top: 56px; }
+    .rp-step {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 40px; padding: 40px 0; border-top: 1px solid var(--sand);
+      position: relative;
+    }
+    .rp-step:last-child { border-bottom: 1px solid var(--sand); }
+    .rp-step::before {
+      content: ''; position: absolute; left: 0; top: 0;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .rp-step:hover::before { width: 100%; }
+    .rp-step__num { font-family: var(--font-display); font-size: 56px; color: var(--light-grey); line-height: 1; padding-top: 4px; }
+    .rp-step__title { font-family: var(--font-display); font-size: 26px; font-weight: 400; margin-bottom: 12px; }
+    .rp-step__body { font-size: 14px; color: var(--warm-grey); line-height: 1.7; }
+    @media (max-width: 600px) { .rp-step { grid-template-columns: 1fr; gap: 8px; } }
+
+    /* OUTCOMES */
+    .outcomes { background: var(--sand); padding: clamp(72px,9vw,120px) var(--gutter); }
+    .outcomes__inner { max-width: var(--max-w); margin: 0 auto; }
+    .outcomes__grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 48px;
+    }
+    .outcome-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 24px; background: var(--cream); border: 1px solid var(--light-grey);
+      font-size: 14px; color: var(--warm-grey); line-height: 1.65;
+      transition: border-color 0.2s;
+    }
+    .outcome-item:hover { border-color: var(--gold); }
+    .outcome-item::before { content: '&#10003;'; color: var(--gold); font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    @media (max-width: 600px) { .outcomes__grid { grid-template-columns: 1fr; } }
+
+    /* CTA */
+    .cta-band {
+      background: var(--near-black); padding: clamp(72px,9vw,120px) var(--gutter);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-band::before {
+      content: '02'; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      font-family: var(--font-display); font-size: clamp(200px,30vw,400px);
+      color: rgba(255,255,255,0.02); line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .cta-band > * { position: relative; z-index: 1; }
+    .cta-band h2 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 400; color: var(--cream); margin-bottom: 20px; }
+    .cta-band p { font-size: 15px; color: rgba(247,245,241,0.55); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+
+    .other-section { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+    .other-card { border: 1px solid var(--sand); padding: clamp(28px,3vw,44px); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: background 0.2s, border-color 0.2s; }
+    .other-card:hover { background: var(--sand); border-color: var(--light-grey); }
+    .other-card__title { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .other-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.7; flex: 1; }
+    .other-card__cta { margin-top: 24px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+    @media (max-width: 600px) { .other-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav nav--dark" id="nav">
+  <a class="nav__logo" href="../index.html" aria-label="Opsen Labs">
+    <img class="nav__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+  </a>
+  <ul class="nav__links">
+    <li class="nav__item--dropdown">
+      <a href="../index.html#services">Services &#9662;</a>
+      <div class="nav__dropdown">
+        <a href="mvp-sprint.html">MVP Sprint</a>
+        <a href="mvp-recovery.html">MVP Recovery</a>
+        <a href="product-optimisation.html">Product Optimisation</a>
+      </div>
+    </li>
+    <li><a href="../index.html#process">Process</a></li>
+    <li><a href="../index.html#testimonials">Testimonials</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a class="btn nav__cta" href="../index.html#contact">Get Free Estimate</a>
+  <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="svc-hero">
+  <div class="top-rule"></div>
+  <a class="svc-hero__back" href="../index.html">&#8592; All Services</a>
+  <span class="svc-hero__num" aria-hidden="true">02</span>
+  <div class="svc-hero__content">
+    <span class="eyebrow">Service 02</span>
+    <h1>MVP Recovery</h1>
+    <p class="svc-hero__lead">Technical debt is a silent growth killer. We diagnose the root cause and rebuild the foundation your next phase demands — without burning everything down.</p>
+    <a class="btn btn--gold" href="../index.html#contact">Diagnose Your Product &#8594;</a>
+  </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Code Audit</span><span class="dot">&middot;</span>
+    <span>Performance</span><span class="dot">&middot;</span>
+    <span>Stability</span><span class="dot">&middot;</span>
+    <span>Security</span><span class="dot">&middot;</span>
+    <span>Developer Velocity</span><span class="dot">&middot;</span>
+    <span>UX Friction</span><span class="dot">&middot;</span>
+    <span>Infrastructure</span><span class="dot">&middot;</span>
+    <span>Technical Debt</span><span class="dot">&middot;</span>
+    <span>Code Audit</span><span class="dot">&middot;</span>
+    <span>Performance</span><span class="dot">&middot;</span>
+    <span>Stability</span><span class="dot">&middot;</span>
+    <span>Security</span><span class="dot">&middot;</span>
+    <span>Developer Velocity</span><span class="dot">&middot;</span>
+    <span>UX Friction</span><span class="dot">&middot;</span>
+    <span>Infrastructure</span><span class="dot">&middot;</span>
+    <span>Technical Debt</span><span class="dot">&middot;</span>
+  </div>
+</div>
+
+<div class="overview">
+  <h2 class="fade-up">Your product got you here. It will not get you there.</h2>
+  <div class="overview__body fade-up" style="transition-delay:.1s">
+    <p>Early-stage products are built for speed. That is rational. But the shortcuts that helped you launch — the hardcoded values, the tightly coupled services, the missing test coverage — become anchors the moment you try to scale.</p>
+    <p>MVP Recovery is a focused intervention. We audit your existing codebase, infrastructure, and user experience to surface what is actually holding growth back. Then we rebuild the critical foundations — surgically, without the disruption of a full rewrite.</p>
+    <p>The goal is not perfection. It is removing the ceiling on your next growth phase while keeping the product live and your team productive throughout.</p>
+  </div>
+</div>
+
+<hr class="rule" />
+
+<section class="symptoms">
+  <div class="symptoms__inner">
+    <span class="eyebrow fade-up" style="color:var(--gold);">Recognise Any of These?</span>
+    <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;color:var(--cream);margin-top:20px;transition-delay:.1s">Signs your product needs recovery — not iteration.</h2>
+    <div class="symptoms__grid">
+      <div class="symptom fade-up"><span class="symptom__label">Performance</span><p class="symptom__heading">Load times that bleed users before they convert</p><p class="symptom__body">Every second of latency costs measurable revenue. Slow core flows are masking the full damage to your retention numbers.</p></div>
+      <div class="symptom fade-up" style="transition-delay:.1s"><span class="symptom__label">Stability</span><p class="symptom__heading">Outages and fires that consume your team</p><p class="symptom__body">If engineering spends more time on incident response than shipping, the codebase architecture is the problem — not the people.</p></div>
+      <div class="symptom fade-up" style="transition-delay:.2s"><span class="symptom__label">Velocity</span><p class="symptom__heading">Simple changes take weeks and break things</p><p class="symptom__body">When every feature touches everything else and deployments feel like gambling, development velocity compounds against you.</p></div>
+      <div class="symptom fade-up"><span class="symptom__label">UX</span><p class="symptom__heading">An interface that leaks users at every step</p><p class="symptom__body">If users drop out of flows that should work, the problem is rarely the user — it is friction baked into the product experience.</p></div>
+      <div class="symptom fade-up" style="transition-delay:.1s"><span class="symptom__label">Scale</span><p class="symptom__heading">Infrastructure that groans under demand</p><p class="symptom__body">A spike in traffic should not be a crisis. If load events expose structural limits, you are one viral moment away from an outage at exactly the wrong time.</p></div>
+      <div class="symptom fade-up" style="transition-delay:.2s"><span class="symptom__label">Security</span><p class="symptom__heading">Exposure that would end you in an audit or breach</p><p class="symptom__body">Early-stage shortcuts become tomorrow's liability as you grow — and attract more scrutiny.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="rp-section">
+  <span class="eyebrow fade-up">How We Work</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">A structured path from fragile to formidable.</h2>
+  <div class="rp-steps">
+    <div class="rp-step fade-up">
+      <span class="rp-step__num">01</span>
+      <div><h3 class="rp-step__title">Deep Audit</h3><p class="rp-step__body">We spend the first week inside your codebase, infrastructure, and product analytics. The outcome is a prioritised list of what is causing the most damage — ranked by impact, not by what is easiest to fix.</p></div>
+    </div>
+    <div class="rp-step fade-up">
+      <span class="rp-step__num">02</span>
+      <div><h3 class="rp-step__title">Triage &amp; Roadmap</h3><p class="rp-step__body">Not everything needs fixing on day one. We work with you to agree a sequenced roadmap that recovers the highest-leverage foundations first, minimising disruption to your live product throughout.</p></div>
+    </div>
+    <div class="rp-step fade-up">
+      <span class="rp-step__num">03</span>
+      <div><h3 class="rp-step__title">Surgical Rebuild</h3><p class="rp-step__body">We execute the roadmap in focused sprints. Where possible, we refactor rather than rewrite — preserving business logic while replacing the structural problems. Where a full rebuild is necessary, we do it in parallel with the live product.</p></div>
+    </div>
+    <div class="rp-step fade-up">
+      <span class="rp-step__num">04</span>
+      <div><h3 class="rp-step__title">Validation &amp; Handover</h3><p class="rp-step__body">Every recovery engagement ends with comprehensive testing, performance benchmarking, and a structured handover. You leave with documentation, improved tooling, and a team that understands the new architecture.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="outcomes">
+  <div class="outcomes__inner">
+    <span class="eyebrow fade-up">What Changes</span>
+    <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">Measurable results — not abstract improvements.</h2>
+    <div class="outcomes__grid">
+      <div class="outcome-item fade-up">Faster page and API response times that directly improve conversion and retention</div>
+      <div class="outcome-item fade-up" style="transition-delay:.05s">A codebase your engineers can move in — features in days, not weeks</div>
+      <div class="outcome-item fade-up" style="transition-delay:.1s">Infrastructure that scales predictably under load without manual intervention</div>
+      <div class="outcome-item fade-up" style="transition-delay:.15s">Fewer incidents and outages — and faster resolution when they do occur</div>
+      <div class="outcome-item fade-up" style="transition-delay:.2s">UX flows that guide users to conversion rather than leaking them at every step</div>
+      <div class="outcome-item fade-up" style="transition-delay:.25s">Security posture that withstands scrutiny from enterprise buyers and auditors</div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <span class="eyebrow fade-up" style="color:var(--gold);display:block;margin-bottom:24px;">Ready to Recover?</span>
+  <h2 class="fade-up">The longer you wait,<br>the more it compounds.</h2>
+  <p class="fade-up" style="transition-delay:.1s">Share your situation and we will respond with an honest assessment of what we can fix — and how long it takes.</p>
+  <a class="btn btn--gold fade-up" href="../index.html#contact" style="transition-delay:.15s">Get a Free Estimate</a>
+</section>
+
+<section class="other-section">
+  <span class="eyebrow fade-up">Also Consider</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(26px,3vw,38px);font-weight:400;margin-top:16px;transition-delay:.1s">Other ways Opsen can help.</h2>
+  <div class="other-grid">
+    <a class="other-card fade-up" href="mvp-sprint.html">
+      <h3 class="other-card__title">MVP Sprint</h3>
+      <p class="other-card__body">Building from scratch? We take a validated concept to a market-ready product in six weeks — fixed price, full ownership.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+    <a class="other-card fade-up" href="product-optimisation.html" style="transition-delay:.1s">
+      <h3 class="other-card__title">Product Optimisation</h3>
+      <p class="other-card__body">Product is stable but growth has plateaued? We surface the compound optimisations that translate into measurable revenue.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div>
+      <img class="footer__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+      <p class="footer__tagline">Product engineering, done right.</p>
+    </div>
+    <ul class="footer__links">
+      <li><a href="mvp-sprint.html">MVP Sprint</a></li>
+      <li><a href="mvp-recovery.html">MVP Recovery</a></li>
+      <li><a href="product-optimisation.html">Product Optimisation</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">&copy; 2025 Opsen Labs. All rights reserved.</p>
+    <p class="footer__copy">Singapore &middot; Dubai &middot; Manila &middot; Mumbai &middot; Karachi</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

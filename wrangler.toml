@@ -1,0 +1,8 @@
+# wrangler.toml — Cloudflare Pages project configuration
+# Deploy with: npx wrangler pages deploy ./opsen
+
+name = "opsen-labs"
+compatibility_date = "2025-01-01"
+
+[env.production]
+name = "opsen-labs"

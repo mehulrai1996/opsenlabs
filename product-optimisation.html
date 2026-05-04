@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Opsen Labs Product Optimisation — Load times, conversion flows, retention loops. Compound optimisations that become measurable revenue." />
+  <title>Product Optimisation — Opsen Labs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <style>
+    @font-face {
+      font-family: 'Alta';
+      src: local('Alta'), url('https://fonts.cdnfonts.com/s/16119/Alta.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    .svc-hero {
+      min-height: 80vh; background: #0e100e;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) clamp(64px,8vw,100px);
+      position: relative; overflow: hidden;
+    }
+    .svc-hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(188,154,91,0.09) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .svc-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .svc-hero__back {
+      position: absolute; top: calc(var(--nav-h) + 24px); left: var(--gutter);
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--warm-grey); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 0.2s; z-index: 2;
+    }
+    .svc-hero__back:hover { color: var(--gold); }
+    .svc-hero__num {
+      position: absolute; right: var(--gutter); bottom: -30px;
+      font-family: var(--font-display); font-size: clamp(160px,22vw,300px);
+      color: rgba(255,255,255,0.025); line-height: 1;
+      pointer-events: none; user-select: none; z-index: 0;
+    }
+    .svc-hero__content { position: relative; z-index: 1; max-width: var(--max-w); margin: 0 auto; width: 100%; }
+    .svc-hero__content > * {
+      opacity: 0; transform: translateY(20px);
+      animation: hero-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .svc-hero .eyebrow { animation-delay: 0.1s; }
+    .svc-hero h1       { animation-delay: 0.25s; }
+    .svc-hero__lead    { animation-delay: 0.4s; }
+    .svc-hero .btn     { animation-delay: 0.55s; }
+    @keyframes hero-in { to { opacity:1; transform:translateY(0); } }
+    .svc-hero h1 {
+      font-family: var(--font-display); font-size: clamp(48px,7vw,96px); font-weight: 400;
+      color: var(--cream); line-height: 1.0; margin: 16px 0 24px;
+    }
+    .svc-hero__lead {
+      font-size: clamp(15px,1.5vw,18px); color: rgba(247,245,241,0.6);
+      max-width: 560px; line-height: 1.7; margin-bottom: 40px;
+    }
+    .top-rule { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold) 0%, transparent 50%); }
+
+    /* OVERVIEW */
+    .overview {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(32px,6vw,96px); padding: clamp(72px,9vw,120px) var(--gutter);
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .overview h2 { font-size: clamp(28px,3.5vw,44px); line-height: 1.1; }
+    .overview__body { font-size: 15px; color: var(--warm-grey); line-height: 1.8; }
+    .overview__body p + p { margin-top: 20px; }
+    @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+
+    /* FOUR LEVERS */
+    .levers { background: var(--sand); padding: clamp(72px,9vw,120px) var(--gutter); }
+    .levers__inner { max-width: var(--max-w); margin: 0 auto; }
+    .levers__grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 24px; margin-top: 56px; }
+    .lever-card {
+      background: var(--cream); padding: clamp(28px,3vw,48px);
+      border: 1px solid var(--light-grey); transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .lever-card:hover { border-color: var(--gold); box-shadow: 0 4px 24px rgba(188,154,91,0.08); }
+    .lever-card__area { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; display: block; }
+    .lever-card__title { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin-bottom: 14px; line-height: 1.1; }
+    .lever-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.7; }
+    .lever-card__stat { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--light-grey); font-size: 11px; color: var(--mid-grey); letter-spacing: 0.04em; }
+    .lever-card__stat strong { color: var(--near-black); font-weight: 400; }
+    @media (max-width: 720px) { .levers__grid { grid-template-columns: 1fr; } }
+
+    /* IMPACT METRICS */
+    .impact { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .impact__row { display: grid; grid-template-columns: repeat(3,1fr); border: 1px solid var(--sand); margin-top: 56px; }
+    .impact__cell { padding: clamp(32px,4vw,52px) clamp(24px,3vw,40px); border-right: 1px solid var(--sand); position: relative; }
+    .impact__cell:last-child { border-right: none; }
+    .impact__cell::before { content: ''; position: absolute; top: 0; left: 0; width: 0; height: 2px; background: var(--gold); transition: width 0.5s cubic-bezier(0.22,1,0.36,1); }
+    .impact__cell:hover::before { width: 100%; }
+    .impact__val { font-family: var(--font-display); font-size: clamp(40px,5vw,64px); line-height: 1; display: block; margin-bottom: 8px; }
+    .impact__label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--warm-grey); margin-bottom: 16px; display: block; }
+    .impact__desc { font-size: 12px; color: var(--mid-grey); line-height: 1.65; }
+    @media (max-width: 720px) { .impact__row { grid-template-columns: 1fr; } .impact__cell { border-right: none; border-bottom: 1px solid var(--sand); } .impact__cell:last-child { border-bottom: none; } }
+
+    /* ENGAGEMENT */
+    .engagement { background: var(--near-black); padding: clamp(72px,9vw,120px) var(--gutter); position: relative; overflow: hidden; }
+    .engagement::before {
+      content: ''; position: absolute; top: -120px; right: -120px;
+      width: 500px; height: 500px; border-radius: 50%;
+      border: 1px solid rgba(188,154,91,0.07); pointer-events: none;
+    }
+    .engagement__inner { max-width: var(--max-w); margin: 0 auto; position: relative; z-index: 1; }
+    .eng-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 1px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.07); margin-top: 56px; }
+    .eng-card { background: var(--near-black); padding: clamp(28px,3vw,44px); transition: background 0.25s; }
+    .eng-card:hover { background: rgba(255,255,255,0.03); }
+    .eng-card__tag { display: inline-block; margin-bottom: 20px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(188,154,91,0.3); padding: 4px 10px; }
+    .eng-card__title { font-family: var(--font-display); font-size: 22px; font-weight: 400; color: var(--cream); margin-bottom: 14px; }
+    .eng-card__body { font-size: 13px; color: rgba(247,245,241,0.42); line-height: 1.7; }
+    @media (max-width: 720px) { .eng-grid { grid-template-columns: 1fr; } }
+
+    /* CTA */
+    .cta-band { background: var(--near-black); padding: clamp(72px,9vw,120px) var(--gutter); text-align: center; position: relative; overflow: hidden; }
+    .cta-band::before {
+      content: '03'; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      font-family: var(--font-display); font-size: clamp(200px,30vw,400px);
+      color: rgba(255,255,255,0.02); line-height: 1; pointer-events: none; user-select: none;
+    }
+    .cta-band > * { position: relative; z-index: 1; }
+    .cta-band h2 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 400; color: var(--cream); margin-bottom: 20px; }
+    .cta-band p { font-size: 15px; color: rgba(247,245,241,0.55); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+
+    .other-section { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+    .other-card { border: 1px solid var(--sand); padding: clamp(28px,3vw,44px); text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: background 0.2s, border-color 0.2s; }
+    .other-card:hover { background: var(--sand); border-color: var(--light-grey); }
+    .other-card__title { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .other-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.7; flex: 1; }
+    .other-card__cta { margin-top: 24px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+    @media (max-width: 600px) { .other-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav nav--dark" id="nav">
+  <a class="nav__logo" href="../index.html" aria-label="Opsen Labs">
+    <img class="nav__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+  </a>
+  <ul class="nav__links">
+    <li class="nav__item--dropdown">
+      <a href="../index.html#services">Services &#9662;</a>
+      <div class="nav__dropdown">
+        <a href="mvp-sprint.html">MVP Sprint</a>
+        <a href="mvp-recovery.html">MVP Recovery</a>
+        <a href="product-optimisation.html">Product Optimisation</a>
+      </div>
+    </li>
+    <li><a href="../index.html#process">Process</a></li>
+    <li><a href="../index.html#testimonials">Testimonials</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a class="btn nav__cta" href="../index.html#contact">Get Free Estimate</a>
+  <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="svc-hero">
+  <div class="top-rule"></div>
+  <a class="svc-hero__back" href="../index.html">&#8592; All Services</a>
+  <span class="svc-hero__num" aria-hidden="true">03</span>
+  <div class="svc-hero__content">
+    <span class="eyebrow">Service 03</span>
+    <h1>Product<br>Optimisation</h1>
+    <p class="svc-hero__lead">Growth plateaus when your product cannot keep pace with your ambitions. We surface the compound optimisations that translate into measurable, compounding revenue.</p>
+    <a class="btn btn--gold" href="../index.html#contact">Unlock Your Ceiling &#8594;</a>
+  </div>
+</section>
+
+<div class="marquee-strip" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Conversion</span><span class="dot">&middot;</span>
+    <span>Retention</span><span class="dot">&middot;</span>
+    <span>Performance</span><span class="dot">&middot;</span>
+    <span>Infrastructure Cost</span><span class="dot">&middot;</span>
+    <span>Core Web Vitals</span><span class="dot">&middot;</span>
+    <span>Funnel Architecture</span><span class="dot">&middot;</span>
+    <span>Revenue Growth</span><span class="dot">&middot;</span>
+    <span>Conversion</span><span class="dot">&middot;</span>
+    <span>Retention</span><span class="dot">&middot;</span>
+    <span>Performance</span><span class="dot">&middot;</span>
+    <span>Infrastructure Cost</span><span class="dot">&middot;</span>
+    <span>Core Web Vitals</span><span class="dot">&middot;</span>
+    <span>Funnel Architecture</span><span class="dot">&middot;</span>
+    <span>Revenue Growth</span><span class="dot">&middot;</span>
+  </div>
+</div>
+
+<div class="overview">
+  <h2 class="fade-up">The gap between good and exceptional is where revenue lives.</h2>
+  <div class="overview__body fade-up" style="transition-delay:.1s">
+    <p>You have achieved traction. Users are coming, transactions are happening, the business is working — but growth has levelled off in ways that are hard to explain from a spreadsheet alone.</p>
+    <p>Product Optimisation goes deeper than surface-level A/B tests. We combine engineering analysis with funnel forensics to identify the compounding friction points — the 200ms lag that costs sign-ups, the checkout step that leaks 18% of intent, the infrastructure cost that outpaces your revenue curve.</p>
+    <p>Each optimisation we make is measured, documented, and designed to compound with the next. The result is not a one-time lift — it is a systematically higher-performing product.</p>
+  </div>
+</div>
+
+<hr class="rule" />
+
+<section class="levers">
+  <div class="levers__inner">
+    <span class="eyebrow fade-up">Where We Focus</span>
+    <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">Four levers that move the metrics that matter.</h2>
+    <div class="levers__grid">
+      <div class="lever-card fade-up">
+        <span class="lever-card__area">Performance</span>
+        <h3 class="lever-card__title">Speed as a Revenue Driver</h3>
+        <p class="lever-card__body">We instrument, profile, and optimise every critical path — front-end rendering, API response times, database query efficiency, and CDN strategy. What feels like a technical detail is often your largest conversion lever.</p>
+        <p class="lever-card__stat">Benchmark: <strong>A 1-second improvement in load time increases conversion by up to 7%</strong> for commerce products.</p>
+      </div>
+      <div class="lever-card fade-up" style="transition-delay:.1s">
+        <span class="lever-card__area">Conversion</span>
+        <h3 class="lever-card__title">Funnel Architecture</h3>
+        <p class="lever-card__body">We trace every user path from entry to conversion — identifying where intent is lost, friction is introduced, and value propositions are failing to land. Then we rebuild the flows that matter most.</p>
+        <p class="lever-card__stat">Benchmark: <strong>Funnel optimisation typically yields 15–35% conversion uplifts</strong> in the first 60 days.</p>
+      </div>
+      <div class="lever-card fade-up" style="transition-delay:.05s">
+        <span class="lever-card__area">Retention</span>
+        <h3 class="lever-card__title">Habit-Forming Loops</h3>
+        <p class="lever-card__body">Acquisition is expensive. Retention compounds. We analyse behavioural patterns, identify the moments that drive return usage, and engineer the engagement systems that keep users coming back.</p>
+        <p class="lever-card__stat">Benchmark: <strong>A 5% increase in retention produces 25–95% more profit</strong> over a 12-month period.</p>
+      </div>
+      <div class="lever-card fade-up" style="transition-delay:.15s">
+        <span class="lever-card__area">Infrastructure</span>
+        <h3 class="lever-card__title">Cost-to-Scale Ratio</h3>
+        <p class="lever-card__body">As products scale, infrastructure costs can grow faster than revenue. We audit your cloud architecture, identify over-provisioned resources, and redesign for efficiency — without sacrificing reliability.</p>
+        <p class="lever-card__stat">Benchmark: <strong>Infrastructure audits typically recover 20–40% of cloud spend</strong> in mature products.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="impact">
+  <span class="eyebrow fade-up">The Results</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">Optimisations that compound.</h2>
+  <div class="impact__row">
+    <div class="impact__cell fade-up">
+      <span class="impact__val" data-count="34" data-suffix="%">0%</span>
+      <span class="impact__label">Avg. Conversion Lift</span>
+      <p class="impact__desc">Median conversion improvement across Product Optimisation engagements, measured 90 days post-launch.</p>
+    </div>
+    <div class="impact__cell fade-up" style="transition-delay:.1s">
+      <span class="impact__val" data-count="2.4" data-suffix="x">0x</span>
+      <span class="impact__label">Faster Core Web Vitals</span>
+      <p class="impact__desc">Average improvement in Largest Contentful Paint across product performance engagements.</p>
+    </div>
+    <div class="impact__cell fade-up" style="transition-delay:.2s">
+      <span class="impact__val" data-count="28" data-suffix="%">0%</span>
+      <span class="impact__label">Infrastructure Cost Reduction</span>
+      <p class="impact__desc">Median reduction in cloud spend following architecture optimisation, without loss of reliability.</p>
+    </div>
+  </div>
+</section>
+
+<section class="engagement">
+  <div class="engagement__inner">
+    <span class="eyebrow fade-up" style="color:var(--gold)">Engagement Options</span>
+    <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;color:var(--cream);margin-top:20px;transition-delay:.1s">Structured around your stage and needs.</h2>
+    <div class="eng-grid">
+      <div class="eng-card fade-up">
+        <span class="eng-card__tag">Sprint</span>
+        <h3 class="eng-card__title">Focused Sprint</h3>
+        <p class="eng-card__body">A four to six week deep-dive on a single high-impact area — performance, conversion, or retention. Ideal if you know where the problem is and need it solved fast.</p>
+      </div>
+      <div class="eng-card fade-up" style="transition-delay:.1s">
+        <span class="eng-card__tag">Audit + Roadmap</span>
+        <h3 class="eng-card__title">Diagnostic First</h3>
+        <p class="eng-card__body">We spend two weeks across your product, analytics, and infrastructure — then deliver a prioritised optimisation roadmap. You decide what to tackle, and with whom.</p>
+      </div>
+      <div class="eng-card fade-up" style="transition-delay:.2s">
+        <span class="eng-card__tag">Ongoing</span>
+        <h3 class="eng-card__title">Continuous Partnership</h3>
+        <p class="eng-card__body">A monthly retainer for sustained optimisation — ongoing instrumentation, regular sprints, and compounding improvements as your product and market evolve.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <span class="eyebrow fade-up" style="color:var(--gold);display:block;margin-bottom:24px;">Ready to Optimise?</span>
+  <h2 class="fade-up">Stop leaving revenue<br>on the table.</h2>
+  <p class="fade-up" style="transition-delay:.1s">Tell us where growth has stalled and we will scope an optimisation engagement that pays for itself within weeks.</p>
+  <a class="btn btn--gold fade-up" href="../index.html#contact" style="transition-delay:.15s">Get a Free Estimate</a>
+</section>
+
+<section class="other-section">
+  <span class="eyebrow fade-up">Also Consider</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(26px,3vw,38px);font-weight:400;margin-top:16px;transition-delay:.1s">Other ways Opsen can help.</h2>
+  <div class="other-grid">
+    <a class="other-card fade-up" href="mvp-sprint.html">
+      <h3 class="other-card__title">MVP Sprint</h3>
+      <p class="other-card__body">Building from scratch? We take a validated concept to a market-ready product in six weeks — fixed price, full ownership.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+    <a class="other-card fade-up" href="mvp-recovery.html" style="transition-delay:.1s">
+      <h3 class="other-card__title">MVP Recovery</h3>
+      <p class="other-card__body">Technical debt slowing you down? We diagnose and rebuild the foundations your next growth phase demands — surgically, without full rewrites.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div>
+      <img class="footer__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+      <p class="footer__tagline">Product engineering, done right.</p>
+    </div>
+    <ul class="footer__links">
+      <li><a href="mvp-sprint.html">MVP Sprint</a></li>
+      <li><a href="mvp-recovery.html">MVP Recovery</a></li>
+      <li><a href="product-optimisation.html">Product Optimisation</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">&copy; 2025 Opsen Labs. All rights reserved.</p>
+    <p class="footer__copy">Singapore &middot; Dubai &middot; Manila &middot; Mumbai &middot; Karachi</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

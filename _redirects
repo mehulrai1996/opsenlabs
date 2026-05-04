@@ -1,0 +1,5 @@
+# Cloudflare Pages redirect rules
+# Ensure clean trailing-slash handling
+/pages/mvp-sprint    /pages/mvp-sprint.html    301
+/pages/mvp-recovery  /pages/mvp-recovery.html  301
+/pages/product-optimisation /pages/product-optimisation.html 301

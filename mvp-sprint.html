@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Opsen Labs MVP Sprint — Zero to investable, market-ready product in weeks." />
+  <title>MVP Sprint — Opsen Labs</title>
+  <link rel="stylesheet" href="../css/global.css" />
+  <style>
+    @font-face {
+      font-family: 'Alta';
+      src: local('Alta'), url('https://fonts.cdnfonts.com/s/16119/Alta.woff') format('woff');
+      font-weight: 400; font-style: normal; font-display: swap;
+    }
+
+    /* HERO */
+    .svc-hero {
+      min-height: 80vh; background: var(--near-black);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 var(--gutter) clamp(64px,8vw,100px);
+      position: relative; overflow: hidden;
+    }
+    /* Diagonal rule graphic */
+    .svc-hero::before {
+      content: ''; position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: 45%; background: rgba(188,154,91,0.04);
+      clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+      pointer-events: none;
+    }
+    /* Grain */
+    .svc-hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .svc-hero__back {
+      position: absolute; top: calc(var(--nav-h) + 24px); left: var(--gutter);
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--warm-grey); text-decoration: none;
+      display: flex; align-items: center; gap: 8px; transition: color 0.2s; z-index: 2;
+    }
+    .svc-hero__back:hover { color: var(--gold); }
+    .svc-hero__num {
+      position: absolute; right: var(--gutter); bottom: -30px;
+      font-family: var(--font-display); font-size: clamp(160px,22vw,300px);
+      color: rgba(255,255,255,0.03); line-height: 1;
+      pointer-events: none; user-select: none; z-index: 0;
+    }
+    .svc-hero__content { position: relative; z-index: 1; max-width: var(--max-w); margin: 0 auto; width: 100%; }
+    .svc-hero__content > * {
+      opacity: 0; transform: translateY(20px);
+      animation: hero-in 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+    }
+    .svc-hero .eyebrow { animation-delay: 0.1s; }
+    .svc-hero h1       { animation-delay: 0.25s; }
+    .svc-hero__lead    { animation-delay: 0.4s; }
+    .svc-hero .btn     { animation-delay: 0.55s; }
+    @keyframes hero-in { to { opacity:1; transform:translateY(0); } }
+    .svc-hero h1 {
+      font-family: var(--font-display); font-size: clamp(48px,7vw,96px); font-weight: 400;
+      color: var(--cream); line-height: 1.0; margin: 16px 0 24px;
+    }
+    .svc-hero__lead {
+      font-size: clamp(15px,1.5vw,18px); color: rgba(247,245,241,0.6);
+      max-width: 560px; line-height: 1.7; margin-bottom: 40px;
+    }
+    /* Gold rule top */
+    .svc-hero .top-rule {
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--gold) 0%, transparent 50%);
+    }
+
+    /* OVERVIEW */
+    .overview {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: clamp(32px,6vw,96px);
+      padding: clamp(72px,9vw,120px) var(--gutter);
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .overview h2 { font-size: clamp(28px,3.5vw,44px); line-height: 1.1; }
+    .overview__body { font-size: 15px; color: var(--warm-grey); line-height: 1.8; }
+    .overview__body p + p { margin-top: 20px; }
+    @media (max-width: 720px) { .overview { grid-template-columns: 1fr; } }
+
+    /* DELIVERABLES */
+    .deliverables { background: var(--sand); padding: clamp(72px,9vw,120px) var(--gutter); }
+    .deliverables__inner { max-width: var(--max-w); margin: 0 auto; }
+    .del-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--light-grey);
+      border: 1px solid var(--light-grey); margin-top: 56px;
+    }
+    .del-card {
+      background: var(--sand); padding: clamp(28px,3vw,48px);
+      position: relative; overflow: hidden;
+      transition: background 0.25s;
+    }
+    .del-card:hover { background: var(--cream); }
+    .del-card__icon { font-size: 28px; margin-bottom: 20px; display: block; }
+    .del-card__title { font-family: var(--font-display); font-size: 22px; font-weight: 400; margin-bottom: 12px; }
+    .del-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.7; }
+    @media (max-width: 720px) { .del-grid { grid-template-columns: 1fr; } }
+
+    /* TIMELINE */
+    .timeline-section { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .timeline { margin-top: 56px; }
+    .tl-item {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 40px; padding: 40px 0; border-top: 1px solid var(--sand);
+      position: relative;
+    }
+    .tl-item:last-child { border-bottom: 1px solid var(--sand); }
+    /* Hover accent */
+    .tl-item::before {
+      content: ''; position: absolute; left: 0; top: 0;
+      width: 0; height: 2px; background: var(--gold);
+      transition: width 0.4s cubic-bezier(0.22,1,0.36,1);
+    }
+    .tl-item:hover::before { width: 100%; }
+    .tl-item__week { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); padding-top: 6px; }
+    .tl-item__title { font-family: var(--font-display); font-size: 26px; font-weight: 400; margin-bottom: 12px; }
+    .tl-item__body { font-size: 14px; color: var(--warm-grey); line-height: 1.7; }
+    @media (max-width: 600px) { .tl-item { grid-template-columns: 1fr; gap: 8px; } }
+
+    /* CTA BAND */
+    .cta-band {
+      background: var(--near-black); padding: clamp(72px,9vw,120px) var(--gutter);
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-band::before {
+      content: '01'; position: absolute; left: 50%; top: 50%;
+      transform: translate(-50%,-50%);
+      font-family: var(--font-display); font-size: clamp(200px,30vw,400px);
+      color: rgba(255,255,255,0.02); line-height: 1;
+      pointer-events: none; user-select: none;
+    }
+    .cta-band > * { position: relative; z-index: 1; }
+    .cta-band h2 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 400; color: var(--cream); margin-bottom: 20px; }
+    .cta-band p { font-size: 15px; color: rgba(247,245,241,0.55); max-width: 480px; margin: 0 auto 40px; line-height: 1.7; }
+
+    /* OTHER SERVICES */
+    .other-section { padding: clamp(72px,9vw,120px) var(--gutter); max-width: var(--max-w); margin: 0 auto; }
+    .other-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+    .other-card {
+      border: 1px solid var(--sand); padding: clamp(28px,3vw,44px);
+      text-decoration: none; color: inherit;
+      display: flex; flex-direction: column;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .other-card:hover { background: var(--sand); border-color: var(--light-grey); }
+    .other-card__title { font-family: var(--font-display); font-size: 24px; font-weight: 400; margin-bottom: 12px; }
+    .other-card__body { font-size: 13px; color: var(--warm-grey); line-height: 1.7; flex: 1; }
+    .other-card__cta { margin-top: 24px; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+    @media (max-width: 600px) { .other-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+<nav class="nav nav--dark" id="nav">
+  <a class="nav__logo" href="../index.html" aria-label="Opsen Labs">
+    <img class="nav__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+  </a>
+  <ul class="nav__links">
+    <li class="nav__item--dropdown">
+      <a href="../index.html#services">Services &#9662;</a>
+      <div class="nav__dropdown">
+        <a href="mvp-sprint.html">MVP Sprint</a>
+        <a href="mvp-recovery.html">MVP Recovery</a>
+        <a href="product-optimisation.html">Product Optimisation</a>
+      </div>
+    </li>
+    <li><a href="../index.html#process">Process</a></li>
+    <li><a href="../index.html#testimonials">Testimonials</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a class="btn nav__cta" href="../index.html#contact">Get Free Estimate</a>
+  <button class="nav__hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
+<section class="svc-hero">
+  <div class="top-rule"></div>
+  <a class="svc-hero__back" href="../index.html">&#8592; All Services</a>
+  <span class="svc-hero__num" aria-hidden="true">01</span>
+  <div class="svc-hero__content">
+    <span class="eyebrow">Service 01</span>
+    <h1>MVP Sprint</h1>
+    <p class="svc-hero__lead">Zero to investable product in weeks. We close the gap between your validated concept and the market — before the window closes.</p>
+    <a class="btn btn--gold" href="../index.html#contact">Start Your Sprint &#8594;</a>
+  </div>
+</section>
+
+<div class="overview">
+  <h2 class="fade-up">The fastest route from insight to investment-ready.</h2>
+  <div class="overview__body fade-up" style="transition-delay:.1s">
+    <p>Every week in planning, competitors ship, investors lose interest, and your runway shortens. The MVP Sprint was built for exactly this pressure.</p>
+    <p>We take a validated concept and engineer a working, scalable product around it. Not a prototype. Not a demo. A real product you can put in front of customers, investors, and the market.</p>
+    <p>Our sprint model compresses months of traditional agency timelines into six focused weeks. You get daily visibility, weekly releases, and a fixed-price engagement — no surprises, no drift.</p>
+  </div>
+</div>
+
+<hr class="rule" />
+
+<section class="deliverables">
+  <div class="deliverables__inner">
+    <span class="eyebrow fade-up">What You Receive</span>
+    <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">Everything required to launch — nothing you do not need.</h2>
+    <div class="del-grid">
+      <div class="del-card fade-up"><span class="del-card__icon">&#9881;</span><h3 class="del-card__title">Production-Grade Code</h3><p class="del-card__body">A clean, documented codebase built on the right stack for your use case — owned entirely by you from day one.</p></div>
+      <div class="del-card fade-up" style="transition-delay:.1s"><span class="del-card__icon">&#9998;</span><h3 class="del-card__title">Polished UI / UX</h3><p class="del-card__body">Interfaces designed for your actual users — not a generic template. Interaction-tested, accessible, and conversion-aware.</p></div>
+      <div class="del-card fade-up" style="transition-delay:.2s"><span class="del-card__icon">&#9729;</span><h3 class="del-card__title">Cloud Infrastructure</h3><p class="del-card__body">Deployed, monitored, and configured to scale. We hand you a live product, not a zip file.</p></div>
+      <div class="del-card fade-up" style="transition-delay:.05s"><span class="del-card__icon">&#128202;</span><h3 class="del-card__title">Analytics &amp; Instrumentation</h3><p class="del-card__body">Built-in telemetry so you understand user behaviour from the first session.</p></div>
+      <div class="del-card fade-up" style="transition-delay:.15s"><span class="del-card__icon">&#128274;</span><h3 class="del-card__title">Security Foundations</h3><p class="del-card__body">Auth, access control, data protection, and dependency hygiene — the non-negotiables handled from the outset.</p></div>
+      <div class="del-card fade-up" style="transition-delay:.25s"><span class="del-card__icon">&#128196;</span><h3 class="del-card__title">Handover Documentation</h3><p class="del-card__body">Architecture guides, API docs, and onboarding materials so your team can take over without friction.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-section">
+  <span class="eyebrow fade-up">How It Unfolds</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(28px,3.5vw,42px);font-weight:400;margin-top:20px;transition-delay:.1s">A six-week sprint, week by week.</h2>
+  <div class="timeline">
+    <div class="tl-item fade-up">
+      <span class="tl-item__week">Week 1</span>
+      <div><h3 class="tl-item__title">Discovery &amp; Architecture</h3><p class="tl-item__body">Deep-dive on your goals, users, and technical constraints. We establish scope, select the stack, and produce an architecture document you sign off on before we write a single line of code.</p></div>
+    </div>
+    <div class="tl-item fade-up">
+      <span class="tl-item__week">Weeks 2–3</span>
+      <div><h3 class="tl-item__title">Core Build</h3><p class="tl-item__body">Infrastructure, data models, and the critical user paths — the 20% of features that deliver 80% of the value. You receive a working demo at the end of week three.</p></div>
+    </div>
+    <div class="tl-item fade-up">
+      <span class="tl-item__week">Weeks 4–5</span>
+      <div><h3 class="tl-item__title">Feature Completion &amp; Polish</h3><p class="tl-item__body">Secondary features, edge cases, and UI refinements. Iterative feedback cycles ensure the product aligns with your vision as it takes shape.</p></div>
+    </div>
+    <div class="tl-item fade-up">
+      <span class="tl-item__week">Week 6</span>
+      <div><h3 class="tl-item__title">Launch &amp; Handover</h3><p class="tl-item__body">Production deployment, monitoring configuration, final QA, and structured knowledge transfer. You go live with full confidence and ownership.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-band">
+  <span class="eyebrow fade-up" style="color:var(--gold);display:block;margin-bottom:24px;">Ready to Sprint?</span>
+  <h2 class="fade-up">Your window is open.<br>Let us use it.</h2>
+  <p class="fade-up" style="transition-delay:.1s">Tell us your concept and we will come back with a clear scope and timeline within 48 hours — no obligation.</p>
+  <a class="btn btn--gold fade-up" href="../index.html#contact" style="transition-delay:.15s">Get a Free Estimate</a>
+</section>
+
+<section class="other-section">
+  <span class="eyebrow fade-up">Also Consider</span>
+  <h2 class="fade-up" style="font-family:var(--font-display);font-size:clamp(26px,3vw,38px);font-weight:400;margin-top:16px;transition-delay:.1s">Other ways Opsen can help.</h2>
+  <div class="other-grid">
+    <a class="other-card fade-up" href="mvp-recovery.html">
+      <h3 class="other-card__title">MVP Recovery</h3>
+      <p class="other-card__body">Existing product with technical debt? We diagnose and rebuild the foundations your next phase demands — surgically, without burning everything down.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+    <a class="other-card fade-up" href="product-optimisation.html" style="transition-delay:.1s">
+      <h3 class="other-card__title">Product Optimisation</h3>
+      <p class="other-card__body">Plateau after initial traction? We go deep on load times, conversion flows, and retention loops to compound measurable revenue.</p>
+      <span class="other-card__cta">Learn More &#8594;</span>
+    </a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div>
+      <img class="footer__logo-img" src="../images/opsen-logo.png" alt="Opsen Labs" />
+      <p class="footer__tagline">Product engineering, done right.</p>
+    </div>
+    <ul class="footer__links">
+      <li><a href="mvp-sprint.html">MVP Sprint</a></li>
+      <li><a href="mvp-recovery.html">MVP Recovery</a></li>
+      <li><a href="product-optimisation.html">Product Optimisation</a></li>
+      <li><a href="../index.html#contact">Contact</a></li>
+    </ul>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__copy">&copy; 2025 Opsen Labs. All rights reserved.</p>
+    <p class="footer__copy">Singapore &middot; Dubai &middot; Manila &middot; Mumbai &middot; Karachi</p>
+  </div>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
